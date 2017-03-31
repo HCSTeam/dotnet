@@ -7,18 +7,24 @@ node {
     }
 
     stage("Docker pull") {
-        sh "docker pull mono:3.10"
+        sh "docker pull thomasmunoz13/vup-testing"
     }
 
     stage("Build & Deploy") {
-        withDockerContainer(image: "mono:3.10",
+        withDockerContainer(image: "thomasmunoz13/vup-testing",
                 toolName: "docker") {
 
             sh "mcs src/*.cs -pkg:wcf -out:server.exe"
         }
+    }
+    
+    stage('deploy'){
+        
         withDockerRegistry([credentialsId: "dockerhub-loick"]) {
-            sh "docker build -t loick111/tcf-dotnet:${BRANCH_NAME} dotNet/."
+            sh 'ls -la'
+            sh "docker build -t loick111/tcf-dotnet:${BRANCH_NAME} ."
             sh "docker push loick111/tcf-dotnet:${BRANCH_NAME}"
         }
+         
     }
 }
