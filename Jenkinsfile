@@ -14,7 +14,7 @@ node {
         withDockerContainer(image: "mono:3.10",
                 toolName: "docker") {
 
-            sh "mcs dotNet/src/*.cs -pkg:wcf -out:dotNet/server.exe"
+            sh "mcs src/*.cs -pkg:wcf -out:server.exe"
         }
     }
 
