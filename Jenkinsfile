@@ -1,4 +1,6 @@
 node {
+    def dockerHome = tool name: "docker"
+    env.PATH = "${dockerHome}/bin:${env.PATH}"
 
     stage("Checking out") {
         checkout scm
