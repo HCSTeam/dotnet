@@ -10,15 +10,12 @@ node {
         sh "docker pull mono:3.10"
     }
 
-    stage("Compile") {
+    stage("Build & Deploy") {
         withDockerContainer(image: "mono:3.10",
                 toolName: "docker") {
 
             sh "mcs src/*.cs -pkg:wcf -out:server.exe"
         }
-    }
-
-    stage("Build & Deploy") {
         withDockerRegistry([credentialsId: "dockerhub-loick"]) {
             sh "docker build -t loick111/tcf-dotnet:${BRANCH_NAME} dotNet/."
             sh "docker push loick111/tcf-dotnet:${BRANCH_NAME}"
